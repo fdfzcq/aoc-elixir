@@ -9,16 +9,18 @@ defmodule Year2015.Day5 do
     |> length()
   end
 
-  defp is_nice_string1(str), do:
-    contains_three_vowels(str) &&
-    contains_repeated_letters(str) &&
-    does_not_contain_invalid_str(str)
+  defp is_nice_string1(str),
+    do:
+      contains_three_vowels(str) &&
+        contains_repeated_letters(str) &&
+        does_not_contain_invalid_str(str)
 
-  defp contains_three_vowels(str), do:
-    String.codepoints(str)
-    |> Enum.filter(&is_vowel/1)
-    |> length()
-    |> Kernel.>=(3)
+  defp contains_three_vowels(str),
+    do:
+      String.codepoints(str)
+      |> Enum.filter(&is_vowel/1)
+      |> length()
+      |> Kernel.>=(3)
 
   defp is_vowel("a"), do: true
   defp is_vowel("e"), do: true
@@ -28,14 +30,12 @@ defmodule Year2015.Day5 do
   defp is_vowel(_), do: false
 
   defp contains_repeated_letters([]), do: false
-  defp contains_repeated_letters([c, c|_]), do: true
-  defp contains_repeated_letters([_|t]), do: contains_repeated_letters(t)
+  defp contains_repeated_letters([c, c | _]), do: true
+  defp contains_repeated_letters([_ | t]), do: contains_repeated_letters(t)
 
-  defp contains_repeated_letters(str), do:
-    contains_repeated_letters(String.codepoints(str))
+  defp contains_repeated_letters(str), do: contains_repeated_letters(String.codepoints(str))
 
-  defp does_not_contain_invalid_str(str), do:
-    String.contains?(str, ["ab", "cd", "pq", "xy"])
+  defp does_not_contain_invalid_str(str), do: String.contains?(str, ["ab", "cd", "pq", "xy"])
 
   ## part 2
 
@@ -50,20 +50,20 @@ defmodule Year2015.Day5 do
     |> length()
   end
 
-  defp is_nice_string2(str), do:
-    has_repeated_pair(str) && has_symetric_trio(str)
+  defp is_nice_string2(str), do: has_repeated_pair(str) && has_symetric_trio(str)
 
-  defp has_repeated_pair([a, b|t]) do
+  defp has_repeated_pair([a, b | t]) do
     case String.contains?(Enum.join(t), a <> b) do
       true -> true
-      false -> has_repeated_pair([b|t])
+      false -> has_repeated_pair([b | t])
     end
   end
+
   defp has_repeated_pair([_]), do: false
 
   defp has_symetric_trio([]), do: false
-  defp has_symetric_trio([a, _, a|_]), do: true
-  defp has_symetric_trio([_|t]), do: has_symetric_trio(t)
+  defp has_symetric_trio([a, _, a | _]), do: true
+  defp has_symetric_trio([_ | t]), do: has_symetric_trio(t)
 
   # utils
 

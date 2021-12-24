@@ -6,39 +6,55 @@ defmodule Year2021.Day20 do
 
   defp process(str, steps) do
     [enhancement_algo_str, input_image_str] = String.split(str, "\n\n")
+
     input_image_str
     |> String.split("\n")
     |> Enum.with_index()
-    |> Enum.reduce(%{},
+    |> Enum.reduce(
+      %{},
       fn {line, y}, acc ->
         String.codepoints(line)
         |> Enum.with_index()
-        |> Enum.reduce(acc,
+        |> Enum.reduce(
+          acc,
           fn {c, x}, new_acc ->
             Map.put(new_acc, {x, y}, c)
-          end)
-      end)
+          end
+        )
+      end
+    )
     |> enhance_image(enhancement_algo_str, steps)
     |> Map.values()
     |> Enum.count(fn c -> c == "#" end)
   end
 
   defp enhance_image(image, _, 0), do: image
-  defp enhance_image(image, enhance_algo, steps), do:
-    image
-    |> IO.inspect()
-    |> Enum.reduce(%{}, &enhance_image(&1, &2, image, enhance_algo, steps))
-    |> enhance_image(enhance_algo, steps - 1)
 
-  defp enhance_image({{x, y}, _}, visited, image, enhance_algo, steps), do:
-    neighbours({x, y})
-    |> Enum.filter(fn coor -> !Map.has_key?(visited, coor) end)
-    |> Enum.reduce(visited, &enhance_pixel(&1, &2, image, enhance_algo, steps))
+  defp enhance_image(image, enhance_algo, steps),
+    do:
+      image
+      |> IO.inspect()
+      |> Enum.reduce(%{}, &enhance_image(&1, &2, image, enhance_algo, steps))
+      |> enhance_image(enhance_algo, steps - 1)
 
-  defp neighbours({x, y}), do:
-    [{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1},
-     {x - 1, y}, {x, y}, {x + 1, y},
-     {x - 1, y + 1}, {x, y + 1}, {x + 1, y + 1}]
+  defp enhance_image({{x, y}, _}, visited, image, enhance_algo, steps),
+    do:
+      neighbours({x, y})
+      |> Enum.filter(fn coor -> !Map.has_key?(visited, coor) end)
+      |> Enum.reduce(visited, &enhance_pixel(&1, &2, image, enhance_algo, steps))
+
+  defp neighbours({x, y}),
+    do: [
+      {x - 1, y - 1},
+      {x, y - 1},
+      {x + 1, y - 1},
+      {x - 1, y},
+      {x, y},
+      {x + 1, y},
+      {x - 1, y + 1},
+      {x, y + 1},
+      {x + 1, y + 1}
+    ]
 
   defp enhance_pixel({x, y}, visited, image, enhance_algo, steps) do
     i = to_output_index({x, y}, image, steps)
@@ -47,13 +63,12 @@ defmodule Year2021.Day20 do
 
   defp to_output_index({x, y}, image, steps) do
     neighbours({x, y})
-    |> Enum.map(
-      fn coor ->
-        case Map.get(image, coor, default_pixel(steps)) do
-          "." -> 0
-          _ -> 1
-        end
-      end)
+    |> Enum.map(fn coor ->
+      case Map.get(image, coor, default_pixel(steps)) do
+        "." -> 0
+        _ -> 1
+      end
+    end)
     |> Integer.undigits(2)
   end
 
