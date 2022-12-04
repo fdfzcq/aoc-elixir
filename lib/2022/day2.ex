@@ -2,12 +2,13 @@ defmodule Year2022.Day2 do
   def run1(), do: part1(input())
   def test1(), do: part1(test_input())
 
-  defp part1(str), do:
-    str
-    |> String.split("\n")
-    |> Enum.map(fn s -> String.split(s, " ") end)
-    |> Enum.map(&calc_score/1)
-    |> Enum.sum()
+  defp part1(str),
+    do:
+      str
+      |> String.split("\n")
+      |> Enum.map(fn s -> String.split(s, " ") end)
+      |> Enum.map(&calc_score/1)
+      |> Enum.sum()
 
   defp calc_score([shape_opp, shape_you]) do
     case shape_you do
@@ -26,12 +27,13 @@ defmodule Year2022.Day2 do
   def run2(), do: part2(input())
   def test2(), do: part2(test_input())
 
-  defp part2(str), do:
-    str
-    |> String.split("\n")
-    |> Enum.map(fn s -> String.split(s, " ") end)
-    |> Enum.map(&calc_score_2/1)
-    |> Enum.sum()
+  defp part2(str),
+    do:
+      str
+      |> String.split("\n")
+      |> Enum.map(fn s -> String.split(s, " ") end)
+      |> Enum.map(&calc_score_2/1)
+      |> Enum.sum()
 
   defp calc_score_2([shape_opp, win_result]) do
     case win_result do
