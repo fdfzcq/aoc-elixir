@@ -2,10 +2,11 @@ defmodule Year2022.Day6 do
   def run1(), do: part1(input())
   def test1(), do: part1(test_input())
 
-  defp part1(str), do:
-    str
-    |> String.codepoints()
-    |> first_marker_index(4)
+  defp part1(str),
+    do:
+      str
+      |> String.codepoints()
+      |> first_marker_index(4)
 
   defp first_marker_index([a, b, c, d | tail], n) do
     if no_repeat([a, b, c, d]) do
@@ -16,6 +17,7 @@ defmodule Year2022.Day6 do
   end
 
   defp no_repeat([]), do: true
+
   defp no_repeat([h | t]) do
     if Enum.member?(t, h) do
       false
@@ -29,18 +31,19 @@ defmodule Year2022.Day6 do
   def run2(), do: part2(input())
   def test2(), do: part2(test_input())
 
-  defp part2(str), do:
-    str
-    |> String.codepoints()
-    |> first_start_message_index(14)
+  defp part2(str),
+    do:
+      str
+      |> String.codepoints()
+      |> first_start_message_index(14)
 
-    defp first_start_message_index(list = [_h | tail], n) do
-      if no_repeat(Enum.slice(list, 0..13)) do
-        n
-      else
-        first_start_message_index(tail, n + 1)
-      end
+  defp first_start_message_index(list = [_h | tail], n) do
+    if no_repeat(Enum.slice(list, 0..13)) do
+      n
+    else
+      first_start_message_index(tail, n + 1)
     end
+  end
 
   # utils
 
