@@ -23,4 +23,18 @@ defmodule Utils do
 
     content
   end
+
+  def to_coordinates_map(str, fun) do
+    str
+    |> String.split("\n")
+    |> Enum.reduce({0, %{}}, fn line, {y, m} ->
+      {_, new_m} =
+        Enum.reduce(String.codepoints(line), {0, m}, fn c, {x, mm} ->
+          {x + 1, Map.put(mm, {x, y}, fun.(c))}
+        end)
+
+      {y + 1, new_m}
+    end)
+    |> elem(1)
+  end
 end
