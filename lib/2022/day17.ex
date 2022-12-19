@@ -20,12 +20,17 @@ defmodule Year2022.Day17 do
   end
 
   defp truncate_floor(floor, height) do
-    {min_y, max_y} = 0..6
-    |> Enum.reduce({height, 0}, fn v, {min, max} ->
-      {_, my} = Enum.max(Enum.filter(floor, fn {x, _} -> x == v end), fn {_, y1}, {_, y2} -> y1 > y2 end)
-      {min(my, min), max(my, max)}
-    end)
-    {Enum.filter(floor, fn {_, y} -> y > min_y - 1 end) |> Enum.map(fn {x, y} -> {x, y - min_y} end), max_y - min_y}
+    {min_y, max_y} =
+      0..6
+      |> Enum.reduce({height, 0}, fn v, {min, max} ->
+        {_, my} =
+          Enum.max(Enum.filter(floor, fn {x, _} -> x == v end), fn {_, y1}, {_, y2} -> y1 > y2 end)
+
+        {min(my, min), max(my, max)}
+      end)
+
+    {Enum.filter(floor, fn {_, y} -> y > min_y - 1 end)
+     |> Enum.map(fn {x, y} -> {x, y - min_y} end), max_y - min_y}
   end
 
   defp move_rock(ins, rock, h, i, floor, max_y) do
@@ -39,8 +44,7 @@ defmodule Year2022.Day17 do
          Enum.any?(floor, fn {fx, fy} -> x == fx && y == fy + 1 end)
        end) do
       {_, y} = Enum.max(new_rock0, fn {_, y1}, {_, y2} -> y1 > y2 end)
-      {max(y - max_y + h, h), i + 1,
-       floor ++ new_rock0}
+      {max(y - max_y + h, h), i + 1, floor ++ new_rock0}
     else
       new_rock1 = Enum.map(new_rock0, fn {x, y} -> {x, y - 1} end)
       move_rock(ins, new_rock1, h, i + 1, floor, max_y)
