@@ -3,10 +3,11 @@ defmodule Year2022.Day20 do
   def test1(), do: part1(test_input())
 
   defp part1(str) do
-    list = str
-    |> String.split("\n")
-    |> Enum.map(&String.to_integer/1)
-    |> Enum.with_index(fn e, i -> {e, i} end)
+    list =
+      str
+      |> String.split("\n")
+      |> Enum.map(&String.to_integer/1)
+      |> Enum.with_index(fn e, i -> {e, i} end)
 
     list0 = mixing(list, [], length(list))
     {0, i0} = Enum.find(list0, fn {e, _} -> e == 0 end)
@@ -20,11 +21,12 @@ defmodule Year2022.Day20 do
     IO.inspect(Enum.sort(new, fn {_, i1}, {_, i2} -> i1 < i2 end))
     Enum.reverse(new)
   end
-  defp mixing([{e, index}|t], new, l) do
+
+  defp mixing([{e, index} | t], new, l) do
     new_i = normalize(index + e, l)
     new_t = Enum.map(t, &move_indices(&1, index, new_i))
     new_acc = Enum.map(new, &move_indices(&1, index, new_i))
-    mixing(new_t, [{e, new_i}|new_acc], l)
+    mixing(new_t, [{e, new_i} | new_acc], l)
   end
 
   defp normalize(v, l) do
@@ -57,10 +59,11 @@ defmodule Year2022.Day20 do
   def test2(), do: part2(test_input())
 
   defp part2(str) do
-    list = str
-    |> String.split("\n")
-    |> Enum.map(&String.to_integer/1)
-    |> Enum.with_index(fn e, i -> {e * 811589153, i} end)
+    list =
+      str
+      |> String.split("\n")
+      |> Enum.map(&String.to_integer/1)
+      |> Enum.with_index(fn e, i -> {e * 811_589_153, i} end)
 
     list0 = 0..9 |> Enum.reduce(list, fn _, l -> mixing(l, [], length(list)) end)
     {0, i0} = Enum.find(list0, fn {e, _} -> e == 0 end)
